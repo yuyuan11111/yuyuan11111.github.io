@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="space" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#080b1f"/>
+      <stop offset=".48" stop-color="#19112d"/>
+      <stop offset="1" stop-color="#071c2f"/>
+    </linearGradient>
+    <radialGradient id="pinkGlow" cx="28%" cy="24%" r="44%">
+      <stop offset="0" stop-color="#ff5fa8" stop-opacity=".58"/>
+      <stop offset=".42" stop-color="#7c3cff" stop-opacity=".2"/>
+      <stop offset="1" stop-color="#7c3cff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="cyanGlow" cx="76%" cy="44%" r="44%">
+      <stop offset="0" stop-color="#42e8ff" stop-opacity=".5"/>
+      <stop offset=".48" stop-color="#3ca7ff" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#3ca7ff" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="72" height="72" patternUnits="userSpaceOnUse">
+      <path d="M72 0H0v72" fill="none" stroke="#8eeaff" stroke-opacity=".13" stroke-width="1"/>
+    </pattern>
+    <filter id="blur">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#space)"/>
+  <rect width="1920" height="1080" fill="url(#pinkGlow)"/>
+  <rect width="1920" height="1080" fill="url(#cyanGlow)"/>
+  <rect width="1920" height="1080" fill="url(#grid)" opacity=".8"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M110 820C354 670 492 704 662 542S965 322 1234 396s370-92 570-254" stroke="#42e8ff" stroke-opacity=".34" stroke-width="2"/>
+    <path d="M86 318c226 62 390 38 492-72S804 86 1034 178s430 138 774-26" stroke="#ff73b3" stroke-opacity=".28" stroke-width="2"/>
+    <path d="M240 938h280l72-72h250l88-88h276l118-118h354" stroke="#a36bff" stroke-opacity=".42" stroke-width="3"/>
+    <path d="M1180 162h180l68 68h160l58 58h160" stroke="#42e8ff" stroke-opacity=".42" stroke-width="3"/>
+  </g>
+  <g fill="#42e8ff">
+    <circle cx="520" cy="866" r="5"/>
+    <circle cx="842" cy="866" r="5"/>
+    <circle cx="1206" cy="778" r="5"/>
+    <circle cx="1428" cy="230" r="5"/>
+    <circle cx="1646" cy="288" r="5"/>
+  </g>
+  <g fill="#ff73b3">
+    <circle cx="578" cy="246" r="5"/>
+    <circle cx="1034" cy="178" r="5"/>
+    <circle cx="1360" cy="294" r="5"/>
+  </g>
+  <g opacity=".72" filter="url(#blur)">
+    <ellipse cx="328" cy="224" rx="118" ry="34" fill="#ff5fa8" opacity=".32"/>
+    <ellipse cx="1398" cy="438" rx="150" ry="44" fill="#42e8ff" opacity=".22"/>
+    <ellipse cx="904" cy="812" rx="138" ry="40" fill="#a36bff" opacity=".2"/>
+  </g>
+  <g fill="#fff" opacity=".65">
+    <circle cx="156" cy="132" r="1.8"/>
+    <circle cx="318" cy="482" r="1.4"/>
+    <circle cx="698" cy="118" r="1.6"/>
+    <circle cx="982" cy="512" r="1.4"/>
+    <circle cx="1308" cy="98" r="1.8"/>
+    <circle cx="1720" cy="632" r="1.6"/>
+    <circle cx="1610" cy="902" r="1.4"/>
+    <circle cx="430" cy="974" r="1.5"/>
+  </g>
+</svg>

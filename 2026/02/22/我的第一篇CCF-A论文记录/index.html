@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="一个用来收藏灵感、学习、生活与温柔日常的个人空间。">
-  <title>芋圆的介绍 | 芋圆的个人博客</title>
+  <title>我的第一篇 CCF-A 论文记录 | 芋圆的个人博客</title>
   
 <link rel="stylesheet" href="/css/style.css">
 
@@ -45,22 +45,47 @@
     <main class="site-main">
       <article class="post-page">
   <header class="post-hero">
-    <p class="eyebrow">2026-04-10</p>
-    <h1>芋圆的介绍</h1>
+    <p class="eyebrow">2026-02-22</p>
+    <h1>我的第一篇 CCF-A 论文记录</h1>
     
       <div class="tag-row">
         
-          <a href="/tags/Hexo/"># Hexo</a>
+          <a href="/tags/IEEE-Transactions-on-Mobile-Computing/"># IEEE Transactions on Mobile Computing</a>
         
-          <a href="/tags/GitHub-Pages/"># GitHub Pages</a>
+          <a href="/tags/CCF-A/"># CCF-A</a>
+        
+          <a href="/tags/%E4%B8%AD%E7%A7%91%E9%99%A2%E4%B8%80%E5%8C%BA/"># 中科院一区</a>
+        
+          <a href="/tags/%E7%A0%94%E7%A9%B6%E7%94%9F/"># 研究生</a>
         
       </div>
     
   </header>
   <div class="article-page">
-    <p>大家好，这里是芋圆的个人博客。</p>
-<p>我希望它不只是一个放文章的地方，也是一间属于自己的小房间：可以写学习笔记，可以记录生活里的小事，也可以放一些慢慢变好的证据。</p>
-<p>接下来我会继续完善这里的内容。也许会写技术学习中的难点总结，也许会写日常里那些不想忘记的片刻。希望未来回头看时，能看到自己一点点变清晰、变坚定、变闪亮。</p>
+    <p>2026 年 2 月 22 日，对我来说是一个很重要的时间点。</p>
+<p>这一天，我的论文 <strong>Optimizing Charging Direction Set for Directional Mobile Chargers with Multi-Sectorial Energy Beams</strong> 正式被 <strong>IEEE Transactions on Mobile Computing</strong> 接收。这是 CCF-A 类、也是中科院一区期刊。对现在的我来说，这不仅仅是一篇论文，更像是我研究生阶段第一个真正留下来的科研结果，也是我科研路上的第一步。</p>
+<p>论文原文： <a href="./%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87CCF-A%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95-assets/paper.pdf">点击查看 PDF</a></p>
+<h2 id="时间线"><a href="#时间线" class="headerlink" title="时间线"></a>时间线</h2><ul>
+<li>25-08 Submitted</li>
+<li>25-11 Major Revision</li>
+<li>26-01 Minor Revision</li>
+<li>26-02 Accept</li>
+</ul>
+<p>回头看这条时间线，其实每一步都不算轻松。从投稿到大修，再到小修和最终接收，中间有很多反复修改、补实验、调表达和打磨细节的过程。收到接收消息的时候，心里更多的是一种很安静的高兴：原来坚持做完一件科研上的事情，真的会留下痕迹。</p>
+<h2 id="这篇论文主要做了什么"><a href="#这篇论文主要做了什么" class="headerlink" title="这篇论文主要做了什么"></a>这篇论文主要做了什么</h2><p>这篇工作关注的是 <strong>无线可充电传感器网络</strong> 中的移动充电问题。</p>
+<p>传统研究里，很多工作默认移动充电器一次只能沿一个方向发射能量波束；但在更实际的硬件条件下，移动充电器其实可以同时形成多个扇形能量波束。这样虽然会带来更强的充电能力，但也引出了一个新的关键问题：<strong>怎样选择一组足够少、但又足够好用的充电方向，使得整体调度依然高效，而且能量损失尽可能低。</strong></p>
+<p>围绕这个问题，这篇论文主要做了两件事：</p>
+<ol>
+<li>从理论上研究了多扇区波束移动充电器下的充电调度问题，并证明了这个问题是 NP-hard 的。</li>
+<li>提出了一个用于方向选择的算法，以及一个四步式的充电调度框架，用来同时兼顾方向选择、充电时长分配和整体调度效率。</li>
+</ol>
+<p>简单来说，这篇论文想解决的是：<strong>面对可以发出多个扇区波束的移动充电器，怎样更聪明地选方向、排调度，从而减少系统中的能量损失，并提升整体充电效率。</strong></p>
+<h2 id="一个直观理解"><a href="#一个直观理解" class="headerlink" title="一个直观理解"></a>一个直观理解</h2><p>如果把移动充电器想象成一个可以“朝不同方向照射能量”的设备，那么它并不是方向越多越好。方向太多会让调度复杂、计算开销增大，也不一定真的带来更优结果。</p>
+<p>所以这篇论文的核心思路，是在理论上找出一组“最小但足够用”的方向集合，让它在功能上尽可能等价于连续的完整方向空间。这样既能减少调度复杂度，也能为后续的充电时间分配和路径规划打下基础。</p>
+<h2 id="结果与意义"><a href="#结果与意义" class="headerlink" title="结果与意义"></a>结果与意义</h2><p>论文中的实验结果表明，提出的方法相比已有基线方法，在能量效率和调度时间上都有明显提升。对我来说，更重要的是，这篇工作让我第一次完整经历了一个科研问题从提出、建模、设计算法、做实验、写论文，到修改和接收的全过程。</p>
+<p>这也是我研究生阶段的第一个工作。</p>
+<p>它可能不是我以后最成熟、最复杂的一篇论文，但一定会是我自己非常难忘的一篇。因为它提醒我，科研并不是一开始就要做得多么“厉害”，而是先迈出第一步，先把一个问题认真做完，然后再一点点走得更远。</p>
+<p>以后回头看，我想我会记得这篇论文，不只是因为它发在了 IEEE TMC，更因为它是我真正开始科研的那个时刻。</p>
 
   </div>
 </article>

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 520" role="img" aria-label="科技感数据面板">
+  <defs>
+    <linearGradient id="panelBg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#111830"/>
+      <stop offset=".55" stop-color="#28183a"/>
+      <stop offset="1" stop-color="#08283a"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" x2="1">
+      <stop offset="0" stop-color="#ff67aa"/>
+      <stop offset="1" stop-color="#46e8ff"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="720" height="520" rx="8" fill="url(#panelBg)"/>
+  <path d="M0 390c118-88 220-104 306-48s178 54 276-20 154-84 138-78v276H0z" fill="#42e8ff" opacity=".08"/>
+  <g stroke="#42e8ff" stroke-opacity=".16" stroke-width="1">
+    <path d="M0 92h720M0 184h720M0 276h720M0 368h720M0 460h720"/>
+    <path d="M90 0v520M180 0v520M270 0v520M360 0v520M450 0v520M540 0v520M630 0v520"/>
+  </g>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)">
+    <path d="M92 356c68-88 132-116 192-84s104 70 166 20 96-122 178-98" stroke="#46e8ff" stroke-width="5"/>
+    <path d="M92 292h98l46-46h94l58-58h112l46 46h84" stroke="#ff67aa" stroke-width="4" opacity=".86"/>
+  </g>
+  <g fill="none" stroke="url(#accent)" stroke-width="3">
+    <rect x="78" y="70" width="222" height="112" rx="8" opacity=".85"/>
+    <rect x="332" y="70" width="310" height="112" rx="8" opacity=".55"/>
+    <rect x="78" y="396" width="564" height="54" rx="8" opacity=".65"/>
+  </g>
+  <g fill="#fff">
+    <rect x="104" y="102" width="76" height="10" rx="5" opacity=".88"/>
+    <rect x="104" y="130" width="146" height="10" rx="5" opacity=".42"/>
+    <rect x="358" y="102" width="168" height="10" rx="5" opacity=".72"/>
+    <rect x="358" y="130" width="238" height="10" rx="5" opacity=".36"/>
+    <rect x="108" y="418" width="170" height="10" rx="5" opacity=".5"/>
+    <rect x="318" y="418" width="96" height="10" rx="5" opacity=".5"/>
+    <rect x="456" y="418" width="146" height="10" rx="5" opacity=".5"/>
+  </g>
+  <g fill="#46e8ff" filter="url(#glow)">
+    <circle cx="284" cy="272" r="7"/>
+    <circle cx="450" cy="292" r="7"/>
+    <circle cx="628" cy="194" r="7"/>
+  </g>
+  <g fill="#ff67aa" filter="url(#glow)">
+    <circle cx="236" cy="246" r="6"/>
+    <circle cx="388" cy="188" r="6"/>
+    <circle cx="546" cy="234" r="6"/>
+  </g>
+</svg>
