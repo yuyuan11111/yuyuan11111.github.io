@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="一个用来收藏灵感、学习、生活与温柔日常的个人空间。">
-  <title>社交 | 芋圆的个人博客</title>
+  <title>从场景路由到可控交付：咨询 PPT AI Skill 的设计实践 | 芋圆的个人博客</title>
   
 <link rel="stylesheet" href="/css/style.css">
 
@@ -43,23 +43,119 @@
     </header>
 
     <main class="site-main">
-      <section class="page-hero">
-  <p class="eyebrow">Yuyuan Space</p>
-  <h1>社交</h1>
-  <p>可以在这里放联系方式、社交账号和想对路过朋友说的话。</p>
-</section>
+      <article class="post-page">
+  <header class="post-hero">
+    <p class="eyebrow">2026-07-25</p>
+    <h1>从场景路由到可控交付：咨询 PPT AI Skill 的设计实践</h1>
+    
+      <div class="tag-row">
+        
+          <a href="/tags/AI-Agent/"># AI Agent</a>
+        
+          <a href="/tags/Skills/"># Skills</a>
+        
+          <a href="/tags/PPT/"># PPT</a>
+        
+          <a href="/tags/%E8%B7%AF%E7%94%B1%E8%AE%BE%E8%AE%A1/"># 路由设计</a>
+        
+          <a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%BA%94%E7%94%A8/"># 大模型应用</a>
+        
+          <a href="/tags/%E5%92%A8%E8%AF%A2/"># 咨询</a>
+        
+      </div>
+    
+  </header>
+  <div class="article-page">
+    <blockquote>
+<p>本文记录我在和君咨询 AI Agent 开发实习中的一个实践方向。为保护项目与客户信息，文中仅分享通用的技术设计、场景抽象和工程方法，不包含任何客户名称、业务数据或内部材料。</p>
+</blockquote>
+<h2 id="从“生成一页-PPT”到“交付一页可用的咨询表达”"><a href="#从“生成一页-PPT”到“交付一页可用的咨询表达”" class="headerlink" title="从“生成一页 PPT”到“交付一页可用的咨询表达”"></a>从“生成一页 PPT”到“交付一页可用的咨询表达”</h2><p>咨询场景里的 PPT，难点从来不只是把文字和图表放到一页上。</p>
+<p>同样是一页“行业分析”，可能需要展示全球供需平衡、项目投资强度、企业盈利能力、汇率变化或产业链流向。每种内容都有不同的结构、数据口径和表达重点：供给、需求与缺口必须同口径；投资强度不能把矿山、冶炼和一体化项目混在一起；产业链图既要关系正确，也要避免连线穿过文字。</p>
+<p>因此，我在实习中参与开发的不是一个只靠通用提示词生成幻灯片的工具，而是一套面向复杂 PPT 场景的 AI Skill。它把不同类型的咨询表达拆成可识别、可约束、可校验的路由，让模型在生成前先判断“这是什么页面”，再按该页面的规则组织数据、版式和结论。</p>
+<h2 id="我负责拆解的能力：9-类场景路由"><a href="#我负责拆解的能力：9-类场景路由" class="headerlink" title="我负责拆解的能力：9 类场景路由"></a>我负责拆解的能力：9 类场景路由</h2><p>目前 Skill 已覆盖 9 类常见的复杂页面。它们不是简单按“折线图、柱状图”分类，而是按咨询分析任务来划分。</p>
+<table>
+<thead>
+<tr>
+<th>路由</th>
+<th>解决的问题</th>
+<th>核心约束</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>complex_chart_text</code></td>
+<td>左图右文、左表右文与多指标解读</td>
+<td>图表事实与右侧结论一一对应，只保留 3-5 个关键项</td>
+</tr>
+<tr>
+<td><code>investment_intensity</code></td>
+<td>单吨投资、CAPEX 强度与项目验证</td>
+<td>明确项目边界，避免不同环节项目直接混算</td>
+</tr>
+<tr>
+<td><code>global_supply_demand</code></td>
+<td>全球供给、需求、平衡与缺口</td>
+<td>统一单位、金属口径和预测年份，防止柱线与标签遮挡</td>
+</tr>
+<tr>
+<td><code>segment_profitability</code></td>
+<td>业务构成、营收、毛利率与估值比较</td>
+<td>企业和业务组合拆行，缺失值不伪造为 0</td>
+</tr>
+<tr>
+<td><code>usd_exchange</code></td>
+<td>多货币汇率走势与变动比较</td>
+<td>统一时间尺度，量级差异大的序列做指数化处理</td>
+</tr>
+<tr>
+<td><code>price_review</code></td>
+<td>全周期价格复盘与阶段判断</td>
+<td>数据频率与分析范围匹配，没有证据时不编造原因</td>
+</tr>
+<tr>
+<td><code>three_line_analysis</code></td>
+<td>CPI、PPI、PMI 等三图同页分析</td>
+<td>使用共同时间区间，统一日期刻度和坐标位置</td>
+</tr>
+<tr>
+<td><code>trade_structure</code></td>
+<td>贸易流向、国别结构、Top10 与集中度</td>
+<td>区分国别贸易和企业竞争，口径不完整时不计算集中度</td>
+</tr>
+<tr>
+<td><code>industry_chain_map</code></td>
+<td>上中下游、材料流向与回收闭环</td>
+<td>只使用输入的节点和关系，严格控制连线和层级</td>
+</tr>
+</tbody></table>
+<p>这一步的价值，是把“模型自由发挥”的空间收窄为“在明确专业规则下完成表达”。对于企业场景，稳定性通常比一次惊艳的生成更重要。</p>
+<h2 id="核心设计：路由不是标签，而是一份可执行的页面契约"><a href="#核心设计：路由不是标签，而是一份可执行的页面契约" class="headerlink" title="核心设计：路由不是标签，而是一份可执行的页面契约"></a>核心设计：路由不是标签，而是一份可执行的页面契约</h2><p>我把每个路由都当作一份页面契约，而不是一个名称。一个完整契约至少包含四部分：</p>
+<ol>
+<li><strong>意图识别</strong>：根据用户描述判断页面目标，例如“全球供需”“单吨投资”或“产业链图谱”。</li>
+<li><strong>输入数据要求</strong>：明确必填字段、单位、时间范围、口径和来源。数据不够时先指出缺失项，而不是直接补一个看似合理的数字。</li>
+<li><strong>版式与图表规则</strong>：规定页面结构、图表类型、图例数量、文字密度、对齐关系和重点强调方式。</li>
+<li><strong>质量校验与降级策略</strong>：发现数据口径不一致、样本期过短或图表拥挤时，自动切换为更稳妥的表达方式。</li>
+</ol>
+<p>用伪代码描述，就是把每一类页面从“提示词”升级为结构化配置：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> route = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;global_supply_demand&#x27;</span>,</span><br><span class="line">  <span class="attr">requiredFields</span>: [<span class="string">&#x27;year&#x27;</span>, <span class="string">&#x27;supply&#x27;</span>, <span class="string">&#x27;demand&#x27;</span>, <span class="string">&#x27;unit&#x27;</span>, <span class="string">&#x27;source&#x27;</span>],</span><br><span class="line">  <span class="attr">validations</span>: [<span class="string">&#x27;supply_and_demand_same_unit&#x27;</span>, <span class="string">&#x27;forecast_year_labeled&#x27;</span>],</span><br><span class="line">  <span class="attr">layoutRules</span>: [<span class="string">&#x27;one_legend_per_metric&#x27;</span>, <span class="string">&#x27;avoid_overlap_with_forecast_labels&#x27;</span>],</span><br><span class="line">  <span class="attr">fallback</span>: <span class="string">&#x27;show_supply_and_demand_trend_without_gap&#x27;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
+<p>这套结构让模型输出不再只依赖一段很长的自然语言提示，而是可以被程序检查、被其他路由复用，也能在出错时给出明确反馈。</p>
+<h2 id="我特别关注的三个工程问题"><a href="#我特别关注的三个工程问题" class="headerlink" title="我特别关注的三个工程问题"></a>我特别关注的三个工程问题</h2><h3 id="1-输入不完整时，先追问还是先生成"><a href="#1-输入不完整时，先追问还是先生成" class="headerlink" title="1. 输入不完整时，先追问还是先生成"></a>1. 输入不完整时，先追问还是先生成</h3><p>真实业务里，用户经常只给一句“做一页全球供需”或一张来源不完整的表。直接生成，常常会出现单位混用、预测年份缺失、结论没有证据等问题。</p>
+<p>我的处理思路是把字段分成“必须有”和“可以降级”。例如，全球供需页必须先有年份、供给、需求和单位；如果没有完整的平衡表，就不展示供需缺口，只生成供需趋势。价格复盘缺少事件材料时，只做数据观察，不写“由于某政策导致上涨”这类归因。</p>
+<p>这本质上是在处理 Agent 的不确定性：宁可明确展示能力边界，也不让模型用幻觉补齐关键事实。</p>
+<h3 id="2-图表能画出来，不代表页面能交付"><a href="#2-图表能画出来，不代表页面能交付" class="headerlink" title="2. 图表能画出来，不代表页面能交付"></a>2. 图表能画出来，不代表页面能交付</h3><p>复杂 PPT 常见的失败不是“没有图”，而是图例重复、标签压住柱体、多张小图时间轴不一致、旧模板图表没有删除干净，或者右侧分析文字只是照抄模板。</p>
+<p>因此，路由中需要把视觉约束写得足够具体。例如汇率页面要求多条小图统一左边界和时间尺度；供需页面只保留一套图例，并让预测标签避开柱体；复杂图表与文字对应页面限制右侧仅保留 3-5 项重点解释。对于需要修改的图表，目标是保留原生可编辑性，而不是输出一张静态图片。</p>
+<h3 id="3-模板只能参考版式，不能成为内容来源"><a href="#3-模板只能参考版式，不能成为内容来源" class="headerlink" title="3. 模板只能参考版式，不能成为内容来源"></a>3. 模板只能参考版式，不能成为内容来源</h3><p>产业链图谱是一个很典型的例子。参考页通常能提供阶段带、配色和连线结构，但其中原有的数字、行业和应用不能被带入新页面。否则看似版式正确，实际内容已经错了。</p>
+<p>所以我把“参考页仅用于版式，不得保留原有数据和行业信息”作为显式规则，并约束模型只使用输入中的节点、关系、比例和回收路径。对生成式系统来说，这类内容隔离规则同样属于质量控制的一部分。</p>
+<h2 id="这段实践让我形成的-Agent-开发方法"><a href="#这段实践让我形成的-Agent-开发方法" class="headerlink" title="这段实践让我形成的 Agent 开发方法"></a>这段实践让我形成的 Agent 开发方法</h2><p>这次项目让我对 AI Agent 的理解更具体了一点：一个好的 Agent 不只是会调用模型，而是要把业务知识转换成系统能执行的约束。</p>
+<p>我目前比较认可的开发路径是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用户需求 -&gt; 场景识别 -&gt; 路由选择 -&gt; 数据校验 -&gt; 页面生成 -&gt; 版式/事实检查 -&gt; 可编辑交付</span><br></pre></td></tr></table></figure>
 
-<section class="section-block">
-  <article class="article-page">
-    <h2 id="找到我"><a href="#找到我" class="headerlink" title="找到我"></a>找到我</h2><ul>
-<li>GitHub: <a target="_blank" rel="noopener" href="https://github.com/yuyuan11111">yuyuan11111</a></li>
-<li>Email: <a href="mailto:&#103;&#97;&#111;&#95;&#113;&#x69;&#110;&#103;&#x79;&#x75;&#x40;&#x71;&#x71;&#x2e;&#99;&#111;&#x6d;">gao_qingyu@qq.com</a></li>
-</ul>
-<p>欢迎温柔交流。这里暂时先放基础信息，后面可以补小红书、微博、B 站或其他社交平台。</p>
+<p>其中最需要花时间的，往往不是最后一步“生成”，而是前面的场景拆分、字段定义、异常处理和验收标准。路由越清晰，后续迭代新场景、定位问题和复用能力就越容易。</p>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>我很喜欢这个项目的一点，是它让我看到 AI 在企业场景中的价值并不只是“替人写内容”。更重要的是，能否把人的专业判断、模板规范和交付标准沉淀为一套可以反复调用的能力。</p>
+<p>这也是我接下来想持续探索的方向：让 Agent 不只会回答问题，而是能在明确的任务边界内，稳定地完成真实工作流。</p>
 
-  </article>
-</section>
+  </div>
+</article>
 
     </main>
 
