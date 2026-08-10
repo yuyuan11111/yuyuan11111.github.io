@@ -232,7 +232,7 @@ img {
 }
 
 .hero-home {
-  min-height: 520px;
+  min-height: 460px;
 }
 
 .hero-backdrop {
@@ -267,10 +267,10 @@ img {
 }
 
 .hero h1 {
-  max-width: 780px;
+  max-width: 700px;
   margin: 0;
-  font-size: clamp(36px, 4.8vw, 66px);
-  line-height: 1.04;
+  font-size: clamp(32px, 3.8vw, 52px);
+  line-height: 1.12;
   font-weight: 900;
 }
 
@@ -778,6 +778,7 @@ img {
   }
 
   .hero h1 {
-    font-size: 32px;
+    font-size: 30px;
+    line-height: 1.16;
   }
 }
