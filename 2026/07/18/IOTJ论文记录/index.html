@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="一个用来收藏灵感、学习、生活与温柔日常的个人空间。">
-  <title>芋圆的个人博客</title>
+  <title>从链式到树结构：我的 IEEE IoT Journal 多 UAV 协作卸载研究 | 芋圆的个人博客</title>
   
 <link rel="stylesheet" href="/css/style.css">
 
@@ -43,32 +43,100 @@
     </header>
 
     <main class="site-main">
-      <section class="page-hero">
-  <p class="eyebrow">Yuyuan Space</p>
-  <h1>文章</h1>
-  <p>把学习、思考和阶段性的答案都认真收好。</p>
-</section>
+      <article class="post-page">
+  <header class="post-hero">
+    <p class="eyebrow">2026-07-18</p>
+    <h1>从链式到树结构：我的 IEEE IoT Journal 多 UAV 协作卸载研究</h1>
+    
+      <div class="tag-row">
+        
+          <a href="/tags/%E7%A0%94%E7%A9%B6%E7%94%9F/"># 研究生</a>
+        
+          <a href="/tags/IEEE-Internet-of-Things-Journal/"># IEEE Internet of Things Journal</a>
+        
+          <a href="/tags/IOTJ/"># IOTJ</a>
+        
+          <a href="/tags/UAV/"># UAV</a>
+        
+          <a href="/tags/MEC/"># MEC</a>
+        
+          <a href="/tags/%E8%BE%B9%E7%BC%98%E8%AE%A1%E7%AE%97/"># 边缘计算</a>
+        
+          <a href="/tags/%E4%BB%BB%E5%8A%A1%E5%8D%B8%E8%BD%BD/"># 任务卸载</a>
+        
+      </div>
+    
+  </header>
+  <div class="article-page">
+    <blockquote>
+<p>这篇文章记录我参与的一项多 UAV 辅助移动边缘计算研究工作。论文题目为 <strong>Broker-mode Tree-structured Cooperative Offloading of Splittable Tasks for Dynamic Multi-UAV Assisted MEC Systems</strong>，目前发表于 IEEE Internet of Things Journal（IOTJ，中科院一区）。本文依据论文当前版本进行整理，重点介绍研究问题、核心方法和我对这项工作的理解。</p>
+</blockquote>
+<p>论文信息：</p>
+<ul>
+<li>论文题目：<em>Broker-mode Tree-structured Cooperative Offloading of Splittable Tasks for Dynamic Multi-UAV Assisted MEC Systems</em></li>
+<li>期刊：IEEE Internet of Things Journal</li>
+<li>IEEE Article ID：11614822</li>
+<li>DOI：<a target="_blank" rel="noopener" href="https://doi.org/10.1109/JIOT.2026.3715166">10.1109&#x2F;JIOT.2026.3715166</a></li>
+<li>作者：Zhenguo Gao，Wenhui Ye，Qingyu Gao，Zhufang Kuang，Shih-Hau Fang，Hsiao-Chun Wu</li>
+</ul>
+<h2 id="这项工作在解决什么问题"><a href="#这项工作在解决什么问题" class="headerlink" title="这项工作在解决什么问题"></a>这项工作在解决什么问题</h2><p>移动终端产生的任务越来越复杂，例如视频分析、智能感知和实时决策。这些任务通常需要较多计算资源，而终端设备本身的算力和电量都有限。移动边缘计算（Mobile Edge Computing, MEC）的基本思路，就是把任务卸载到距离更近的边缘节点进行处理。</p>
+<p>在没有完善地面基站的偏远区域，UAV 可以作为具有移动能力的空中边缘服务器，为地面终端提供计算服务。但当一个任务很大、单个 UAV 的计算资源不足时，如何让多个 UAV 协同完成任务，就成为一个更复杂的问题。</p>
+<p>这篇论文关注的就是一个动态的多 UAV 辅助 MEC 系统：地面终端会移动，任务可以被拆分，多个 UAV 需要共同完成计算，同时还要考虑 UAV 的飞行位置、通信资源、计算资源和系统能耗。</p>
+<h2 id="为什么要从链式协作走向树结构协作"><a href="#为什么要从链式协作走向树结构协作" class="headerlink" title="为什么要从链式协作走向树结构协作"></a>为什么要从链式协作走向树结构协作</h2><p>已有的多 UAV 协作方式中，一类是由终端直接把不同子任务分发给多个 UAV。这样虽然可以并行计算，但终端需要同时处理多个 UAV 的通信、任务划分和结果回传，控制开销比较大。</p>
+<p>另一类 broker-mode 方法会让一个 UAV 充当 broker。终端只需要把任务交给 broker，再由 broker 根据其他 UAV 的工作负载和资源情况安排协作。这种方式能够减少终端侧的交互压力，也更适合动态网络环境。</p>
+<p>但如果 broker 只能把任务沿着一条路径转发，协作关系就会变成链式结构：broker 把一部分任务交给 UAV 1，UAV 1 再把剩余任务交给 UAV 2。这样的结构层次单一，能够参与协作的 UAV 数量和并行能力都受到限制。</p>
+<p>本文提出的关键思路是：<strong>允许 broker 把一个可拆分任务同时分发给多个 UAV，并允许这些 UAV 继续拆分自己的子任务，形成递归的树结构协作。</strong></p>
+<p>这样一来，任务不再只能沿着一条链路逐级传递，而是可以在多个分支上并行计算。每个参与协作的 UAV 既可以处理自己收到的部分，也可以继续将子任务交给下一层 UAV。</p>
+<p><img src="/images/iotj-system-model.png" alt="论文中的多 UAV 辅助 MEC 系统模型"></p>
+<p><em>图 1：论文系统模型示意图。地面终端、UAV、覆盖区域以及任务卸载、结果回传和 UAV 协作关系分别用不同箭头表示。图片整理自论文 Fig. 1。</em></p>
+<h2 id="Broker-mode-的工作流程"><a href="#Broker-mode-的工作流程" class="headerlink" title="Broker-mode 的工作流程"></a>Broker-mode 的工作流程</h2><p>可以把整个过程理解成下面几个步骤：</p>
+<ol>
+<li>地面终端在移动过程中产生一个需要计算的任务。</li>
+<li>系统根据终端位置、任务情况和 UAV 资源，决定任务是否在本地执行，或者卸载给某个 UAV。</li>
+<li>接收任务的 UAV 成为该任务的 broker，判断自己能处理多少任务，并决定是否向其他 UAV 转发子任务。</li>
+<li>其他 UAV 根据获得的子任务和自身资源继续本地计算，必要时还可以向下一层 UAV 转发。</li>
+<li>不同分支并行执行，计算结果逐层回传并由 broker 进行整合。</li>
+</ol>
+<p>论文中的协作结构不是固定拓扑。实际由优化过程决定哪些 UAV 参与、每个 UAV 分到多少任务，以及协作会展开到多少层。</p>
+<p><img src="/images/iotj-broker-tree.png" alt="Broker-mode 树结构协作示意图"></p>
+<p><em>图 2：broker-mode 树结构协作示意图。任务从地面终端卸载到 broker UAV 后，沿多个分支递归分发。图片整理自论文 Fig. 3。</em></p>
+<h2 id="论文联合优化了哪些变量"><a href="#论文联合优化了哪些变量" class="headerlink" title="论文联合优化了哪些变量"></a>论文联合优化了哪些变量</h2><p>这项工作的难点在于，系统中多个决策变量是相互耦合的，不能只单独优化其中一个：</p>
+<ul>
+<li><strong>任务卸载决策</strong>：任务是在终端本地计算，还是卸载到某个 UAV。</li>
+<li><strong>任务拆分与协作拓扑</strong>：哪些 UAV 参与协作，任务如何在树结构中分配和转发。</li>
+<li><strong>UAV 轨迹与部署位置</strong>：UAV 飞到哪里，直接影响覆盖范围、通信距离和飞行能耗。</li>
+<li><strong>通信资源分配</strong>：包括终端与 UAV、UAV 与 UAV 之间的通信过程。</li>
+<li><strong>计算资源分配</strong>：不同 UAV 为各个任务分配多少计算能力。</li>
+</ul>
+<p>论文将这些内容统一放入 JOUMCC 问题中，目标是最小化系统的总能量消耗，同时提高任务成功完成的数量。由于变量之间存在强耦合，原问题是一个复杂的非凸优化问题。</p>
+<h2 id="BMUC-算法的基本思路"><a href="#BMUC-算法的基本思路" class="headerlink" title="BMUC 算法的基本思路"></a>BMUC 算法的基本思路</h2><p>为处理这个联合优化问题，论文提出了基于 Block Coordinate Descent（BCD）的 Multiple UAV Collaboration（BMUC）算法，并结合 Successive Convex Approximation（SCA）方法进行求解。</p>
+<p>直观地说，BMUC 并不是试图一次性解决所有变量，而是把原问题拆成多个相互关联的子问题，在迭代过程中交替优化：</p>
+<ol>
+<li>固定其他变量，优化任务卸载、任务分配和树结构协作关系。</li>
+<li>在当前协作关系下，优化 UAV 的部署位置和飞行轨迹。</li>
+<li>根据新的位置和拓扑，重新分配通信与计算资源。</li>
+<li>循环更新各个子问题，直到目标函数收敛或达到停止条件。</li>
+</ol>
+<p>SCA 的作用，是将其中难以直接求解的非凸部分，在当前迭代点附近转化为更容易处理的近似问题。这样可以在保留原问题主要结构的同时，逐步得到一个可行的优化结果。</p>
+<h2 id="实验结果说明了什么"><a href="#实验结果说明了什么" class="headerlink" title="实验结果说明了什么"></a>实验结果说明了什么</h2><p>论文通过多组仿真实验，从系统能耗、任务完成情况、UAV 计算能力、任务计算时长和轨迹变化等角度进行了分析。</p>
+<p>总体结果表明，BMUC 在能耗和成功完成任务数量两个指标上都优于对比方案。论文摘要中给出的代表性结果是：计算任务能耗降低超过 10%，任务完成率提升超过 9%。在不同参数设置下，BMUC 相较次优方案还呈现出约 10.1% 至 10.7% 的计算能耗下降，以及约 9.3% 以上的任务完成率提升。</p>
+<p>这些结果背后的原因并不是单纯增加 UAV 数量，而是树结构允许系统根据任务规模和实时资源情况动态拓展协作分支：</p>
+<ul>
+<li>高负载任务可以被多个 UAV 并行处理；</li>
+<li>broker 可以根据资源情况动态调整任务分配；</li>
+<li>UAV 轨迹和通信距离可以与任务卸载决策共同优化；</li>
+<li>当单个 UAV 无法独立完成任务时，树结构能够减少任务失败的可能性。</li>
+</ul>
+<h2 id="我从这项工作中理解到的几个关键词"><a href="#我从这项工作中理解到的几个关键词" class="headerlink" title="我从这项工作中理解到的几个关键词"></a>我从这项工作中理解到的几个关键词</h2><h3 id="可拆分任务"><a href="#可拆分任务" class="headerlink" title="可拆分任务"></a>可拆分任务</h3><p>并不是所有计算任务都能被任意拆开。只有当任务具有合理的可分解结构时，才适合在多个 UAV 之间进行分配。因此，任务拆分比例、子任务之间的关系和结果整合方式，都需要在模型中明确。</p>
+<h3 id="Broker-mode"><a href="#Broker-mode" class="headerlink" title="Broker-mode"></a>Broker-mode</h3><p>Broker 不只是一个中转节点。它需要承担任务接收、资源判断、子任务划分、协作关系建立和结果整合等工作。把这些职责集中在 broker 上，可以减少终端与多个 UAV 之间的直接交互。</p>
+<h3 id="树结构协作"><a href="#树结构协作" class="headerlink" title="树结构协作"></a>树结构协作</h3><p>树结构的优势在于分支和递归。它突破了单链路协作的限制，但同时也带来了更复杂的拓扑管理、任务比例约束和结果回传开销。因此，树越大并不意味着一定越好，最终仍然需要由能耗、时延和任务完成情况共同决定。</p>
+<h3 id="联合优化"><a href="#联合优化" class="headerlink" title="联合优化"></a>联合优化</h3><p>UAV 的位置会影响通信，通信会影响卸载，卸载又会影响计算资源分配和任务是否能够按时完成。这些变量相互影响，正是这类问题难以直接求解的原因，也是 BCD 和 SCA 方法发挥作用的地方。</p>
+<h2 id="写在研究路上"><a href="#写在研究路上" class="headerlink" title="写在研究路上"></a>写在研究路上</h2><p>这项工作让我对移动边缘计算和多 UAV 协作有了更完整的认识。以前看到“任务卸载”时，可能会更关注一个公式或一个算法；真正把系统模型、协作拓扑、轨迹、资源和实验结果连起来之后，才会发现，科研问题往往不是把某一个局部做到最好，而是要在多个目标和约束之间找到可行的平衡。</p>
+<p>对我来说，这也是一次从具体问题出发，经历系统建模、优化问题构造、算法设计和仿真验证的研究实践。它让我更清楚自己感兴趣的方向：无线网络、边缘智能、移动计算，以及如何让有限的设备资源支撑更复杂的智能任务。</p>
+<p>未来还可以继续考虑更多现实因素，例如 UAV 电池容量、充电调度、通信不稳定、任务优先级，以及能耗、时延、可靠性和公平性之间的多目标权衡。这些问题也提醒我，一篇论文的结束，往往只是下一个研究问题的开始。</p>
 
-
-<section class="section-block">
-  <div class="post-grid">
-    
-      <article class="post-card">
-  <div class="post-card-topline">
-    
-      <span class="post-category">休闲阅读 / 人工智能</span>
-    
-    <time datetime="2025-08-01T04:00:00.000Z">2025.08.01</time>
   </div>
-  <h3><a href="/2025/08/01/AI%E5%AD%A6%E4%B9%A0%E4%B9%A6%E7%B1%8D%E5%88%86%E4%BA%AB/">在人人都需要会一点 AI 的时代，先把基础弄明白</a></h3>
-  <p>为什么现在想分享这本书这几年，AI 已经从一个听起来有些遥远的技术词，进入了很多人的学习和工作：查资料、整理会议内容、修改表达、写代码、做数据分析，甚至规划一天的安排，都可能用到 AI。 所以我觉得，“会一点 AI”会慢慢变成一种和搜索、办</p>
-  <a class="read-more" href="/2025/08/01/AI%E5%AD%A6%E4%B9%A0%E4%B9%A6%E7%B1%8D%E5%88%86%E4%BA%AB/">继续阅读</a>
 </article>
-
-    
-  </div>
-</section>
-
 
     </main>
 
