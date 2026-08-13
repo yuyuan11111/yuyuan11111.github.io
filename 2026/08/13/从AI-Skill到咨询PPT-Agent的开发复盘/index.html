@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="一个用来收藏灵感、学习、生活与温柔日常的个人空间。">
-  <title>芋圆的个人博客</title>
+  <title>从规则集合到可执行 Agent：咨询 PPT 智能体的开发复盘 | 芋圆的个人博客</title>
   
 <link rel="stylesheet" href="/css/style.css">
 
@@ -43,34 +43,75 @@
     </header>
 
     <main class="site-main">
-      <section class="page-hero">
-  <p class="eyebrow">Yuyuan Space</p>
-  <h1>文章</h1>
-  <p>把学习、思考和阶段性的答案都认真收好。</p>
-</section>
+      <article class="post-page">
+  <header class="post-hero">
+    <p class="eyebrow">2026-08-13</p>
+    <h1>从规则集合到可执行 Agent：咨询 PPT 智能体的开发复盘</h1>
+    
+      <div class="tag-row">
+        
+          <a href="/tags/AI-Agent/"># AI Agent</a>
+        
+          <a href="/tags/Skills/"># Skills</a>
+        
+          <a href="/tags/PPT/"># PPT</a>
+        
+          <a href="/tags/%E8%B7%AF%E7%94%B1%E8%AE%BE%E8%AE%A1/"># 路由设计</a>
+        
+          <a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%BA%94%E7%94%A8/"># 大模型应用</a>
+        
+          <a href="/tags/%E5%B7%A5%E5%85%B7%E7%BC%96%E6%8E%92/"># 工具编排</a>
+        
+          <a href="/tags/%E8%B4%A8%E9%87%8F%E6%A0%A1%E9%AA%8C/"># 质量校验</a>
+        
+      </div>
+    
+  </header>
+  <div class="article-page">
+    <blockquote>
+<p>本文记录我在和君咨询 AI Agent 开发实习中的一项实践。为保护公司和客户信息，文中只讨论通用的技术思路、工程难点和个人体会，不涉及内部材料与业务数据。</p>
+</blockquote>
+<p>之前我把这项工作理解为“为复杂 PPT 场景设计一套 AI Skill”：先识别页面类型，再按照对应规则完成数据组织、图表生成和版式调整。随着场景不断增加，我逐渐意识到，单纯堆叠路由和提示词并不能解决全部问题。</p>
+<p>真正的难点在于，如何让这些能力被一个 Agent 统一组织起来：它要理解用户想做什么，选择合适的处理路径，调用正确的工具，知道什么时候需要追问，也要在交付前检查结果是否可信。</p>
+<h2 id="为什么要从-Skill-走向-Agent"><a href="#为什么要从-Skill-走向-Agent" class="headerlink" title="为什么要从 Skill 走向 Agent"></a>为什么要从 Skill 走向 Agent</h2><p>Skill 更像一组可以复用的专业能力，擅长回答“某类页面应该怎么做”；Agent 则需要进一步回答“当前任务应该调用哪些能力，以及它们之间如何衔接”。</p>
+<p>以一页全球供需分析为例，系统不能只把数据交给模型生成图表，还需要完成以下判断：</p>
+<ul>
+<li>用户要表达的是供需趋势、供需缺口，还是不同区域的结构对比；</li>
+<li>数据的单位、年份和统计口径是否一致；</li>
+<li>当前信息是否足以支撑“缺口扩大”这样的结论；</li>
+<li>生成后是否需要继续调整图表、文本和页面布局。</li>
+</ul>
+<p>因此，我把原来的 Skill 能力看作 Agent 的专业工具箱，再增加任务理解、路由决策、状态管理和结果验收等环节。Agent 的价值不只是调用大模型，而是把这些环节组织成一条可以执行的工作流。</p>
+<h2 id="整体设计：先判断，再执行"><a href="#整体设计：先判断，再执行" class="headerlink" title="整体设计：先判断，再执行"></a>整体设计：先判断，再执行</h2><p>目前我比较认可的处理链路是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">用户需求</span><br><span class="line">   -&gt; 任务理解与场景识别</span><br><span class="line">   -&gt; 路由选择</span><br><span class="line">   -&gt; 输入数据校验</span><br><span class="line">   -&gt; 专业 Skill 执行</span><br><span class="line">   -&gt; PPT 生成与版式调整</span><br><span class="line">   -&gt; 事实、结构和视觉检查</span><br><span class="line">   -&gt; 可编辑文件交付</span><br></pre></td></tr></table></figure>
 
+<p>其中，路由不是简单的标签匹配，而是连接用户意图和执行能力的中间层。它需要根据用户描述、已有文件和页面目标，选择对应的专业处理流程。</p>
+<p>我会把每个路由看成一份“页面契约”，至少明确四件事：需要什么输入、应该生成什么结构、必须遵守哪些约束，以及信息不足时如何降级。这样可以减少 Agent 的自由发挥，让输出更接近真实咨询交付的要求。</p>
+<h2 id="开发中遇到的几个难点"><a href="#开发中遇到的几个难点" class="headerlink" title="开发中遇到的几个难点"></a>开发中遇到的几个难点</h2><h3 id="1-用户表达和技术场景并不一一对应"><a href="#1-用户表达和技术场景并不一一对应" class="headerlink" title="1. 用户表达和技术场景并不一一对应"></a>1. 用户表达和技术场景并不一一对应</h3><p>用户通常不会直接说“请调用 global_supply_demand 路由”，而是描述一个业务目标，例如“帮我做一页全球供需情况”。同一种需求还可能对应趋势图、平衡表或产业链分析。</p>
+<p>我的解决思路是先提取任务意图，再识别数据类型、时间范围、页面结构和交付目标，最后才映射到具体路由。对于相似场景，不能只依赖关键词，还需要结合可用数据和页面上下文判断。</p>
+<h3 id="2-输入数据不完整时，不能让模型自行补齐"><a href="#2-输入数据不完整时，不能让模型自行补齐" class="headerlink" title="2. 输入数据不完整时，不能让模型自行补齐"></a>2. 输入数据不完整时，不能让模型自行补齐</h3><p>复杂 PPT 中最危险的问题，往往不是版式不好看，而是数字口径不一致，或者结论没有数据依据。用户只提供部分数据时，如果 Agent 直接生成完整页面，很容易把“缺失”伪装成“确定”。</p>
+<p>因此，我在设计时区分了必填字段和可选字段。缺少关键字段时，Agent 应该先追问；如果只是缺少某个非核心维度，则采用明确标注的降级方案。例如没有完整供需平衡数据时，只展示供给和需求趋势，不擅自计算缺口，也不编造变化原因。</p>
+<h3 id="3-生成成功不等于页面可以交付"><a href="#3-生成成功不等于页面可以交付" class="headerlink" title="3. 生成成功不等于页面可以交付"></a>3. 生成成功不等于页面可以交付</h3><p>PPT 是一个视觉交付物。图表虽然成功生成，但仍可能出现图例重复、标签遮挡、文字超出边界、旧页面元素残留、图表和结论对应不上等问题。</p>
+<p>我逐渐把质量检查拆成三层：</p>
+<ol>
+<li>事实检查：数字、单位、时间和来源是否一致；</li>
+<li>结构检查：页面是否符合当前路由的布局和字段要求；</li>
+<li>视觉检查：文字、图表、图例和连线是否重叠，页面是否适合阅读。</li>
+</ol>
+<p>只有这三层都通过，结果才算完成。这个过程也让我认识到，Agent 的验收标准必须提前设计，不能等出现问题后再临时补规则。</p>
+<h3 id="4-Agent-需要知道什么时候停止"><a href="#4-Agent-需要知道什么时候停止" class="headerlink" title="4. Agent 需要知道什么时候停止"></a>4. Agent 需要知道什么时候停止</h3><p>一个容易被忽略的问题是，Agent 可能不断尝试修改页面，或者在不确定时反复调用工具。为了让流程可控，我需要为每种操作设置清晰的完成条件：什么时候认为数据已经足够，什么时候应该进入生成阶段，什么时候只返回问题清单，什么时候必须交给人工确认。</p>
+<p>这实际上是状态管理问题。Agent 不仅要知道“下一步做什么”，还要知道当前处于收集、分析、生成、检查还是待确认状态。</p>
+<h2 id="从开发过程中学到的三点"><a href="#从开发过程中学到的三点" class="headerlink" title="从开发过程中学到的三点"></a>从开发过程中学到的三点</h2><p>第一，业务知识需要被翻译成机器可执行的规则。只告诉模型“做得专业一点”远远不够，还需要明确单位、字段、版式、证据和异常处理方式。</p>
+<p>第二，稳定性来自边界，而不是来自更长的 Prompt。把不同场景拆成独立路由，把输入、工具和验收条件写清楚，通常比继续向一个总 Prompt 中添加例外情况更容易维护。</p>
+<p>第三，Agent 的最终价值要落在交付结果上。模型回答得再流畅，如果文件不可编辑、数据无法追溯、页面无法直接使用，就还没有完成真正的工作。</p>
+<h2 id="我对这项实践的理解"><a href="#我对这项实践的理解" class="headerlink" title="我对这项实践的理解"></a>我对这项实践的理解</h2><p>把 Skill 写成 Agent，并不是给原有能力外面再包一层对话，而是重新思考“能力如何被调用”。原来的 Skill 解决的是单个场景的专业处理，Agent 解决的是任务理解、能力选择、工具协作和结果交付。</p>
+<p>这个过程让我开始用更工程化的方式理解大模型应用：提示词只是其中一部分，路由、数据契约、状态流转、工具权限、失败处理和质量评估同样重要。</p>
+<p>后续我希望继续完善两个方向。一是积累更多真实场景下的评测样本，用可量化的指标比较不同版本的效果；二是让 Agent 的每一次决策和修改都更容易追踪，方便定位问题、复盘结果，也方便后续扩展新的 PPT 场景。</p>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>这项工作让我感受到，AI Agent 开发并不是把一个模型接上几个工具就结束了。真正需要花时间的，是把复杂业务拆成清晰步骤，把人的经验沉淀成规则，再把每个环节连接成稳定、可检查、可交付的系统。</p>
+<p>从 Skill 到 Agent，对我来说也是一次从“实现一个能力”走向“设计一套工作流”的练习。</p>
 
-<section class="section-block">
-  <div class="post-grid">
-    
-      <article class="post-card">
-  <div class="post-card-topline">
-    
-      <span class="post-category">科研 / 论文</span>
-    
-    <time datetime="2026-07-18T04:00:00.000Z">2026.07.18</time>
   </div>
-  <h3><a href="/2026/07/18/IOTJ%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/">从链式到树结构：我的 IEEE IoT Journal 多 UAV 协作卸载研究</a></h3>
-  <p> 这篇文章记录我参与的一项多 UAV 辅助移动边缘计算研究工作。论文题目为 Broker-mode Tree-structured Cooperative Offloading of Splittable Tasks for Dynamic</p>
-  <a class="read-more" href="/2026/07/18/IOTJ%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/">继续阅读</a>
 </article>
-
-    
-  </div>
-
-  
-</section>
-
 
     </main>
 
