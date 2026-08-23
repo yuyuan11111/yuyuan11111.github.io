@@ -404,7 +404,14 @@ img {
 }
 
 .stat-card[data-counter-card] strong {
-  font-size: 26px;
+  color: var(--rose);
+  font-size: clamp(30px, 4vw, 46px);
+  letter-spacing: 0;
+}
+
+.stat-card[data-counter-card].is-unavailable strong {
+  color: var(--muted);
+  font-size: 17px;
 }
 
 .stat-card-text strong {

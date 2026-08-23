@@ -128,7 +128,8 @@ if (counterCards.length) {
     counterCards.forEach((card) => {
       const value = card.querySelector('strong');
       if (value && (value.textContent || '').trim() === '--') {
-        value.textContent = '部署后可见';
+        value.textContent = '暂不可用';
+        card.classList.add('is-unavailable');
       }
     });
   }, 2500);
