@@ -126,6 +126,36 @@ const todayVisitorDisplay = document.querySelector('[data-today-visitor-display]
 const totalVisitorSource = document.getElementById('busuanzi_value_site_uv');
 const todayVisitorSource = document.getElementById('busuanzi_value_today_site_uv');
 const visitorSeed = 5000;
+const visitorStorageKey = 'yuyuan-visitor-counter-v2';
+
+function getVisitorState() {
+  const now = new Date();
+  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  const fallback = { total: 0, day: today, today: 0 };
+
+  try {
+    const saved = JSON.parse(localStorage.getItem(visitorStorageKey) || 'null');
+    if (!saved || typeof saved.total !== 'number') return fallback;
+    return saved.day === today
+      ? { total: saved.total, day: today, today: Number(saved.today) || 0 }
+      : { total: saved.total, day: today, today: 0 };
+  } catch {
+    return fallback;
+  }
+}
+
+const visitorState = getVisitorState();
+
+// GitHub Pages has no database of its own, so keep a browser-level fallback when the remote counter is unavailable.
+if (totalVisitorDisplay) {
+  visitorState.total += 1;
+  visitorState.today += 1;
+  try {
+    localStorage.setItem(visitorStorageKey, JSON.stringify(visitorState));
+  } catch {
+    // Private browsing may block localStorage; the remote value still remains usable.
+  }
+}
 
 function readVisitorCount(source) {
   const value = (source?.textContent || '').trim().replace(/,/g, '');
@@ -135,12 +165,23 @@ function readVisitorCount(source) {
 function syncVisitorCounts() {
   const total = readVisitorCount(totalVisitorSource);
   const today = readVisitorCount(todayVisitorSource);
+  if (typeof total === 'number' && total > visitorState.total) {
+    visitorState.total = total;
+  }
+  const effectiveTotal = Math.max(total ?? 0, visitorState.total);
+  const effectiveToday = Math.max(today ?? 0, visitorState.today);
+
+  try {
+    localStorage.setItem(visitorStorageKey, JSON.stringify(visitorState));
+  } catch {
+    // The visible fallback remains available when localStorage is blocked.
+  }
 
   if (totalVisitorDisplay) {
-    totalVisitorDisplay.textContent = String(visitorSeed + (total ?? 0));
+    totalVisitorDisplay.textContent = String(visitorSeed + effectiveTotal);
   }
   if (todayVisitorDisplay) {
-    todayVisitorDisplay.textContent = String(today ?? 0);
+    todayVisitorDisplay.textContent = String(effectiveToday);
   }
 }
 
