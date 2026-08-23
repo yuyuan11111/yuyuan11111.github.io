@@ -398,6 +398,11 @@ img {
   line-height: 1;
 }
 
+.counter-container {
+  display: block;
+  min-height: 46px;
+}
+
 .stat-card span {
   color: var(--muted);
   line-height: 1.6;
