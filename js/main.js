@@ -128,8 +128,8 @@ if (counterCards.length) {
     counterCards.forEach((card) => {
       const value = card.querySelector('strong');
       if (value && (value.textContent || '').trim() === '--') {
-        value.textContent = '暂不可用';
-        card.classList.add('is-unavailable');
+        value.textContent = value.dataset.fallback || '持续记录中';
+        card.classList.add('is-fallback');
       }
     });
   }, 2500);

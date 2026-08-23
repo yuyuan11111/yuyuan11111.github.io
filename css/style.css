@@ -409,9 +409,9 @@ img {
   letter-spacing: 0;
 }
 
-.stat-card[data-counter-card].is-unavailable strong {
+.stat-card[data-counter-card].is-fallback strong {
   color: var(--muted);
-  font-size: 17px;
+  font-size: 24px;
 }
 
 .stat-card-text strong {
