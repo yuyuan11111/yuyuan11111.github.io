@@ -123,6 +123,30 @@ document.addEventListener('keydown', (event) => {
 
 const counterCards = document.querySelectorAll('[data-counter-card]');
 
+const totalVisitorValue = document.getElementById('busuanzi_value_site_uv');
+const visitorSeed = 5000;
+
+function addVisitorSeed() {
+  if (!totalVisitorValue) return;
+
+  const rawText = (totalVisitorValue.textContent || '').trim();
+  const rawNumber = rawText.replace(/,/g, '');
+  const displayedNumber = (totalVisitorValue.dataset.display || '').replace(/,/g, '');
+
+  if (!/^\d+$/.test(rawNumber) || rawNumber === displayedNumber) return;
+
+  const liveVisitors = Number(rawNumber);
+  const totalVisitors = visitorSeed + liveVisitors;
+  totalVisitorValue.textContent = totalVisitors.toLocaleString('en-US');
+  totalVisitorValue.dataset.display = String(totalVisitors);
+}
+
+if (totalVisitorValue) {
+  const visitorObserver = new MutationObserver(addVisitorSeed);
+  visitorObserver.observe(totalVisitorValue, { childList: true, characterData: true, subtree: true });
+  window.setTimeout(addVisitorSeed, 3000);
+}
+
 if (counterCards.length) {
   window.setTimeout(() => {
     counterCards.forEach((card) => {

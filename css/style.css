@@ -400,7 +400,7 @@ img {
 
 .counter-container {
   display: block;
-  min-height: 46px;
+  min-height: 30px;
 }
 
 .stat-card span {
@@ -409,14 +409,14 @@ img {
 }
 
 .stat-card[data-counter-card] strong {
-  color: var(--rose);
-  font-size: clamp(30px, 4vw, 46px);
+  color: var(--ink);
+  font-size: 30px;
   letter-spacing: 0;
 }
 
 .stat-card[data-counter-card].is-fallback strong {
   color: var(--muted);
-  font-size: 24px;
+  font-size: 30px;
 }
 
 .stat-card-text strong {
