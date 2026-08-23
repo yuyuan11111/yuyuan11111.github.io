@@ -111,11 +111,11 @@ img { display: block; max-width: 100%; }
 .mini-panel h3 { margin: 0 0 14px; font-size: 21px; }
 .mini-panel ul { display: grid; gap: 8px; margin: 0; padding-left: 18px; color: var(--muted); font-size: 14px; line-height: 1.72; }
 
-.page-hero, .post-hero { max-width: 850px; padding: 90px 0 22px; border-bottom: 1px solid var(--line); }
+.page-hero, .post-hero { width: min(100%, 850px); margin-inline: auto; padding: 90px 0 22px; border-bottom: 1px solid var(--line); }
 .page-hero h1, .post-hero h1 { margin: 0; font-size: 52px; line-height: 1.12; }
 .page-hero p:not(.eyebrow) { max-width: 660px; margin: 16px 0 0; color: var(--muted); font-size: 16px; line-height: 1.75; }
 .post-hero .tag-row { margin-top: 24px; }
-.article-page { max-width: 850px; color: var(--ink); font-size: 16px; line-height: 1.95; }
+.article-page { width: min(100%, 850px); margin-inline: auto; color: var(--ink); font-size: 16px; line-height: 1.95; }
 .article-page h2, .article-page h3 { margin: 40px 0 16px; line-height: 1.3; }
 .article-page h2 { font-size: 27px; }
 .article-page h3 { font-size: 21px; }
