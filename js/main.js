@@ -121,40 +121,37 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-const counterCards = document.querySelectorAll('[data-counter-card]');
-
-const totalVisitorValue = document.getElementById('busuanzi_value_site_uv');
+const totalVisitorDisplay = document.querySelector('[data-total-visitor-display]');
+const todayVisitorDisplay = document.querySelector('[data-today-visitor-display]');
+const totalVisitorSource = document.getElementById('busuanzi_value_site_uv');
+const todayVisitorSource = document.getElementById('busuanzi_value_today_site_uv');
 const visitorSeed = 5000;
 
-function addVisitorSeed() {
-  if (!totalVisitorValue) return;
-
-  const rawText = (totalVisitorValue.textContent || '').trim();
-  const rawNumber = rawText.replace(/,/g, '');
-  const displayedNumber = (totalVisitorValue.dataset.display || '').replace(/,/g, '');
-
-  if (!/^\d+$/.test(rawNumber) || rawNumber === displayedNumber) return;
-
-  const liveVisitors = Number(rawNumber);
-  const totalVisitors = visitorSeed + liveVisitors;
-  totalVisitorValue.textContent = totalVisitors.toLocaleString('en-US');
-  totalVisitorValue.dataset.display = String(totalVisitors);
+function readVisitorCount(source) {
+  const value = (source?.textContent || '').trim().replace(/,/g, '');
+  return /^[0-9]+$/.test(value) ? Number(value) : null;
 }
 
-if (totalVisitorValue) {
-  const visitorObserver = new MutationObserver(addVisitorSeed);
-  visitorObserver.observe(totalVisitorValue, { childList: true, characterData: true, subtree: true });
-  window.setTimeout(addVisitorSeed, 3000);
+function syncVisitorCounts() {
+  const total = readVisitorCount(totalVisitorSource);
+  const today = readVisitorCount(todayVisitorSource);
+
+  if (totalVisitorDisplay) {
+    totalVisitorDisplay.textContent = String(visitorSeed + (total ?? 0));
+  }
+  if (todayVisitorDisplay) {
+    todayVisitorDisplay.textContent = String(today ?? 0);
+  }
 }
 
-if (counterCards.length) {
-  window.setTimeout(() => {
-    counterCards.forEach((card) => {
-      const value = card.querySelector('strong');
-      if (value && (value.textContent || '').trim() === '--') {
-        value.textContent = value.dataset.fallback || '持续记录中';
-        card.classList.add('is-fallback');
-      }
-    });
-  }, 2500);
-}
+// Busuanzi writes to hidden source nodes. Visible values always remain under this page's control.
+[totalVisitorSource, todayVisitorSource].filter(Boolean).forEach((source) => {
+  new MutationObserver(syncVisitorCounts).observe(source, {
+    childList: true,
+    characterData: true,
+    subtree: true
+  });
+});
+
+syncVisitorCounts();
+window.setTimeout(syncVisitorCounts, 2500);

@@ -398,25 +398,13 @@ img {
   line-height: 1;
 }
 
-.counter-container {
-  display: block;
-  min-height: 30px;
-}
-
 .stat-card span {
   color: var(--muted);
   line-height: 1.6;
 }
 
-.stat-card[data-counter-card] strong {
-  color: var(--ink);
-  font-size: 30px;
-  letter-spacing: 0;
-}
-
-.stat-card[data-counter-card].is-fallback strong {
-  color: var(--muted);
-  font-size: 30px;
+.counter-provider {
+  display: none !important;
 }
 
 .stat-card-text strong {
